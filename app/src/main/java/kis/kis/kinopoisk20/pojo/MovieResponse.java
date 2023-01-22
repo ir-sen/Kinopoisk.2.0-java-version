@@ -6,6 +6,8 @@ import java.util.List;
 
 public class MovieResponse {
 
+
+
     @SerializedName("docs")
     List<Movie> moviesInf;
 
@@ -15,5 +17,12 @@ public class MovieResponse {
 
     public List<Movie> getMoviesInf() {
         return moviesInf;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieResponse{" +
+                "moviesInf=" + moviesInf +
+                '}';
     }
 }
