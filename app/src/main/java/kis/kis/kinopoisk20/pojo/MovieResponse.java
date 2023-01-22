@@ -7,7 +7,6 @@ import java.util.List;
 public class MovieResponse {
 
 
-
     @SerializedName("docs")
     List<Movie> moviesInf;
 
