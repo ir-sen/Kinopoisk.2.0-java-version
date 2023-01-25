@@ -7,7 +7,7 @@ public class Rating {
     @SerializedName("kp")
     String kp;
 
-    public String getKp() {
+    public String getRatingKp() {
         return kp;
     }
 

@@ -20,8 +20,9 @@ import kis.kis.kinopoisk20.pojo.Movie;
 import kis.kis.kinopoisk20.pojo.MovieResponse;
 
 public class MainViewModel extends AndroidViewModel {
-
+    // here we save all get movies
     private final MutableLiveData<List<Movie>> listMovies = new MutableLiveData<>();
+    // rx java composable
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final String TAG = "MainViewModel";
@@ -30,7 +31,7 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
     }
-
+    // For get list out
     public LiveData<List<Movie>> getListMovies() {
         return listMovies;
     }

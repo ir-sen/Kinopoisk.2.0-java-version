@@ -6,7 +6,7 @@ import java.util.List;
 
 public class MovieResponse {
 
-
+    // we get this class from api
     @SerializedName("docs")
     List<Movie> moviesInf;
 
