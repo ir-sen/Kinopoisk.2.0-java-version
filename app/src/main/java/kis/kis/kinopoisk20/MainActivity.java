@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import kis.kis.kinopoisk20.adapters.MainRecycleViewAdapter;
 import kis.kis.kinopoisk20.pojo.Movie;
 import kis.kis.kinopoisk20.viewModels.MainViewModel;
 
@@ -28,22 +27,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initRecycle();
+        initViewModelLoad();
+
+    }
+
+    private void initViewModelLoad() {
+        // init view model
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mainViewModel.getListMovies().observe(this, movies -> {
+            Log.d(TAG, movies.toString());
+            recycleViewAdapter.setMovies(movies);
+        });
+        mainViewModel.loadMovies();
+        // call back if recycle view end
+        recycleViewAdapter.setOnReachEndListener(() -> mainViewModel.loadMovies());
+    }
+
+    private void initRecycle() {
         // create recycle view
         recyclerView = findViewById(R.id.recycleMovie);
         recycleViewAdapter = new MainRecycleViewAdapter();
         recyclerView.setAdapter(recycleViewAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        // init view model
-        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        mainViewModel.getListMovies().observe(this, new Observer<List<Movie>>() {
-            @Override
-            public void onChanged(List<Movie> movies) {
-                Log.d(TAG, movies.toString());
-                recycleViewAdapter.setMovies(movies);
-            }
-        });
-        mainViewModel.loadMovies();
-
-
     }
 }

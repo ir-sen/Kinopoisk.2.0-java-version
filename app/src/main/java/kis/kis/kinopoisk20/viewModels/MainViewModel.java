@@ -40,20 +40,20 @@ public class MainViewModel extends AndroidViewModel {
         Disposable disposable = ApiFactory.apiService.loadMovie(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieResponse>() {
-                               @Override
-                               public void accept(MovieResponse movieResponse) throws Throwable {
-                                   Log.d(TAG, movieResponse.toString());
-                                   page++;
-                                   listMovies.setValue(movieResponse.getMoviesInf());
+                .subscribe(movieResponse -> {
+                    Log.d(TAG, movieResponse.toString());
+                    List<Movie> loadMovies = listMovies.getValue();
+                    // if first time init new list movies
+                    if (loadMovies != null) {
+                        loadMovies.addAll(movieResponse.getMoviesInf());
+                        listMovies.setValue(loadMovies);
+                    } else {
+                        // else add old list
+                        listMovies.setValue(movieResponse.getMoviesInf());
+                    }
+                    page++;
 
-                               }
-                           }, new Consumer<Throwable>() {
-                               @Override
-                               public void accept(Throwable throwable) throws Throwable {
-                                    Log.d(TAG, throwable.toString());
-                               }
-                           }
+                }, throwable -> Log.d(TAG, throwable.toString())
                 );
 
         compositeDisposable.add(disposable);

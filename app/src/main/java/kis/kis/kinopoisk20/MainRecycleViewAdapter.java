@@ -1,4 +1,4 @@
-package kis.kis.kinopoisk20.adapters;
+package kis.kis.kinopoisk20;
 
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -16,12 +16,16 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-import kis.kis.kinopoisk20.R;
 import kis.kis.kinopoisk20.pojo.Movie;
 
 public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleViewAdapter.ViewHolder>{
 
     private List<Movie> movies = new ArrayList<>();
+    // call back init for use in activity
+    OnReachEndListener onReachEndListener;
+    public void setOnReachEndListener(OnReachEndListener onReachEndListener) {
+        this.onReachEndListener = onReachEndListener;
+    }
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
@@ -61,17 +65,25 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
         );
         holder.textInView.setBackground(background);
         holder.textInView.setText(String.valueOf(rating));
+        // call interface if end recycle
+        if (position == movies.size() - 1 && onReachEndListener != null) {
+            onReachEndListener.onEndListener();
+        }
     }
 
     @Override
     public int getItemCount() {
         return movies.size();
     }
+    // create interface for call back
+    interface OnReachEndListener {
+        void onEndListener();
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textInView;
-        private ImageView imageInView;
+        private final TextView textInView;
+        private final ImageView imageInView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
