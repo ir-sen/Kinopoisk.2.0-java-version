@@ -1,5 +1,6 @@
 package kis.kis.kinopoisk20.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -43,7 +45,22 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
         Glide.with(holder.imageInView)
                 .load(movie.getPoster().getUrl())
                 .into(holder.imageInView);
-        holder.textInView.setText(movie.getRating().getRatingKp());
+        double rating = movie.getRating().getRatingKp();
+        int backgroundId;
+        if (rating > 7) {
+            backgroundId = R.drawable.circle_green_bg;
+        } else if (rating > 5) {
+            backgroundId = R.drawable.circle_orange_bg;
+        } else {
+            backgroundId = R.drawable.circle_red_bg;
+        }
+
+        Drawable background = ContextCompat.getDrawable(
+                holder.textInView.getContext(),
+                backgroundId
+        );
+        holder.textInView.setBackground(background);
+        holder.textInView.setText(String.valueOf(rating));
     }
 
     @Override

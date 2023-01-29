@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName;
 public class Rating {
 
     @SerializedName("kp")
-    String kp;
+    double kp;
 
-    public String getRatingKp() {
+    public double getRatingKp() {
         return kp;
     }
 
-    public void setKp(String kp) {
+    public void setKp(double kp) {
         this.kp = kp;
     }
 
