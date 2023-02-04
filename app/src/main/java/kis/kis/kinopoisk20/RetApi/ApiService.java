@@ -2,6 +2,7 @@ package kis.kis.kinopoisk20.RetApi;
 
 import io.reactivex.rxjava3.core.Single;
 import kis.kis.kinopoisk20.pojo.MovieResponse;
+import kis.kis.kinopoisk20.pojo.TrailersResponse;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -12,5 +13,7 @@ public interface ApiService {
     @GET("movie?field=rating.kp&search=5-10&field=year&search=2017-2020&field=typeNumber&search=2&sortField=year&sortType=1&sortField=votes.imdb&sortType=-1&token=ZQQ8GMN-TN54SGK-NB3MKEC-ZKB8V06&limit=10")
     Single<MovieResponse> loadMovie(@Query("page") int page);
 
+    @GET("movie?token=ZQQ8GMN-TN54SGK-NB3MKEC-ZKB8V06&field=id")
+    Single<TrailersResponse> loadTrailers(@Query("search") int id);
 
 }
