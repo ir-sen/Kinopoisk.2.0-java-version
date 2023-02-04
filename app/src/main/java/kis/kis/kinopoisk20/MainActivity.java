@@ -1,5 +1,6 @@
 package kis.kis.kinopoisk20;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import kis.kis.kinopoisk20.pojo.Movie;
 import kis.kis.kinopoisk20.viewModels.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,7 +55,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        recycleViewAdapter.setOnItemClickListener(new MainRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void onClickListener(Movie movie) {
+                Intent detailIntent = MovieDetailActivity.newIntent(MainActivity.this, movie);
+                startActivity(detailIntent);
+            }
+        });
+
     }
+
+
+
 
     private void initRecycle() {
         // create recycle view

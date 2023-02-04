@@ -27,6 +27,12 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
         this.onReachEndListener = onReachEndListener;
     }
 
+    OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
         notifyDataSetChanged();
@@ -69,6 +75,15 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
         if (position == movies.size() - 10 && onReachEndListener != null) {
             onReachEndListener.onEndListener();
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onClickListener(movie);
+                }
+            }
+        });
     }
 
     @Override
@@ -78,6 +93,10 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
     // create interface for call back
     interface OnReachEndListener {
         void onEndListener();
+    }
+
+    interface OnItemClickListener {
+        void  onClickListener(Movie movie);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

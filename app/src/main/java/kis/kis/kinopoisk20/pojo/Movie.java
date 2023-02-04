@@ -1,8 +1,11 @@
 package kis.kis.kinopoisk20.pojo;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 // here we create pojo classes we been use in project
-public class Movie {
+public class Movie implements Serializable {
 
     @SerializedName("poster")
     Poster poster;
