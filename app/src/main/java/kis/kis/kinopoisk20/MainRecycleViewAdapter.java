@@ -66,7 +66,7 @@ public class MainRecycleViewAdapter extends RecyclerView.Adapter<MainRecycleView
         holder.textInView.setBackground(background);
         holder.textInView.setText(String.valueOf(rating));
         // call interface if end recycle
-        if (position == movies.size() - 1 && onReachEndListener != null) {
+        if (position == movies.size() - 10 && onReachEndListener != null) {
             onReachEndListener.onEndListener();
         }
     }
