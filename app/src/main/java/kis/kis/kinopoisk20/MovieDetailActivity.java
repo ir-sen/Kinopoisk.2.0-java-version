@@ -1,6 +1,5 @@
 package kis.kis.kinopoisk20;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,16 +7,17 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import kis.kis.kinopoisk20.RetApi.ApiFactory;
+import java.util.List;
+
 import kis.kis.kinopoisk20.databinding.ActivityMoviewDetailBinding;
 import kis.kis.kinopoisk20.pojo.Movie;
-import kis.kis.kinopoisk20.pojo.TrailersResponse;
+import kis.kis.kinopoisk20.pojo.Trailer;
+import kis.kis.kinopoisk20.viewModels.DetailActivityViewModel;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -27,13 +27,17 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private final static String TAG = "MovieDetailActivity";
 
+    private DetailActivityViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMoviewDetailBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        viewModel = new ViewModelProvider(this).get(DetailActivityViewModel.class);
         GetMovie();
+
 
     }
     //  get and set movie to activity
@@ -46,22 +50,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         binding.yearTv.setText(String.valueOf(movie.getYear()));
         binding.descriptionTv.setText(movie.getDescription());
 
-        ApiFactory.apiService.loadTrailers(movie.getId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<TrailersResponse>() {
-                               @Override
-                               public void accept(TrailersResponse trailersResponse) throws Throwable {
-                                   Log.d(TAG, trailersResponse.toString());
-                               }
-                           }, new Consumer<Throwable>() {
-                               @SuppressLint("CheckResult")
-                               @Override
-                               public void accept(Throwable throwable) throws Throwable {
-                                   Log.d(TAG, throwable.toString());
-                               }
-                           }
-                );
+        viewModel.loadTrailers(movie.getId());
+        viewModel.getTrailers().observe(this, new Observer<List<Trailer>>() {
+            @Override
+            public void onChanged(List<Trailer> trailers) {
+                Log.d(TAG, trailers.toString());
+            }
+        });
 
     }
 
