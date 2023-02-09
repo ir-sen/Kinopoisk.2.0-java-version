@@ -2,6 +2,7 @@ package kis.kis.kinopoisk20;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +50,14 @@ public class MovieDetailActivity extends AppCompatActivity {
         trailersAdapter = new TrailersAdapter();
         binding.trailerRv.setAdapter(trailersAdapter);
 
+        trailersAdapter.setOnTrailerItemClickListener(new TrailersAdapter.OnTrailerItemClickListener() {
+            @Override
+            public void onItemClick(Trailer trailer) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(trailer.getUrl()));
+                startActivity(intent);
+            }
+        });
     }
 
     //  get and set movie to activity
