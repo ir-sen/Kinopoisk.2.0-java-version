@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
@@ -29,6 +30,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private DetailActivityViewModel viewModel;
 
+    private TrailersAdapter trailersAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +39,18 @@ public class MovieDetailActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         viewModel = new ViewModelProvider(this).get(DetailActivityViewModel.class);
+        initRecycleViewTrailers();
         GetMovie();
 
 
     }
+
+    private void initRecycleViewTrailers() {
+        trailersAdapter = new TrailersAdapter();
+        binding.trailerRv.setAdapter(trailersAdapter);
+
+    }
+
     //  get and set movie to activity
     private void GetMovie() {
         Movie movie = (Movie) getIntent().getSerializableExtra(EXTRA_KEY);
@@ -54,6 +65,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         viewModel.getTrailers().observe(this, new Observer<List<Trailer>>() {
             @Override
             public void onChanged(List<Trailer> trailers) {
+                trailersAdapter.setListTrailers(trailers);
                 Log.d(TAG, trailers.toString());
             }
         });
