@@ -10,7 +10,6 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
@@ -18,6 +17,7 @@ import java.util.List;
 
 import kis.kis.kinopoisk20.databinding.ActivityMoviewDetailBinding;
 import kis.kis.kinopoisk20.pojo.Movie;
+import kis.kis.kinopoisk20.pojo.ReviewItem;
 import kis.kis.kinopoisk20.pojo.Trailer;
 import kis.kis.kinopoisk20.viewModels.DetailActivityViewModel;
 
@@ -58,6 +58,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 
     //  get and set movie to activity
@@ -75,9 +77,18 @@ public class MovieDetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Trailer> trailers) {
                 trailersAdapter.setListTrailers(trailers);
-                Log.d(TAG, trailers.toString());
             }
         });
+
+
+        viewModel.loadReviews(movie.getId());
+        viewModel.getReviews().observe(this, new Observer<List<ReviewItem>>() {
+            @Override
+            public void onChanged(List<ReviewItem> reviewItemList) {
+                Log.d(TAG, reviewItemList.toString());
+            }
+        });
+
 
     }
 
