@@ -16,6 +16,10 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import kis.kis.kinopoisk20.data_base.MovieDao;
+import kis.kis.kinopoisk20.data_base.MovieDataBase;
 import kis.kis.kinopoisk20.databinding.ActivityMoviewDetailBinding;
 import kis.kis.kinopoisk20.pojo.Movie;
 import kis.kis.kinopoisk20.pojo.ReviewItem;
@@ -47,6 +51,15 @@ public class MovieDetailActivity extends AppCompatActivity {
         initRecycleViewTrailers();
         GetMovie();
         initRecycle();
+
+
+        // test DAta base
+        Movie movie = (Movie) getIntent().getSerializableExtra(EXTRA_KEY);
+        MovieDao movieDao = MovieDataBase.getInstance(getApplication()).movieDao();
+        movieDao.inserMoview(movie)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+
 
     }
 

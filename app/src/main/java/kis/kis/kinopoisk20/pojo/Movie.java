@@ -1,18 +1,23 @@
 package kis.kis.kinopoisk20.pojo;
 
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 // here we create pojo classes we been use in project
+@Entity(tableName = "favorite_movies")
 public class Movie implements Serializable {
-
+    @Embedded
     @SerializedName("poster")
     Poster poster;
-
+    @Embedded
     @SerializedName("rating")
     Rating rating;
-
+    @PrimaryKey
     @SerializedName("id")
     int id;
 

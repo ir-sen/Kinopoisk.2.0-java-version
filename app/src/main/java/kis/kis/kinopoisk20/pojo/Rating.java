@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class Rating implements Serializable {
 
     @SerializedName("kp")
+    public
     double kp;
 
     public double getRatingKp() {
