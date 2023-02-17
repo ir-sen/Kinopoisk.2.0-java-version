@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Kinopoisk.2.0</string>
+    <string name="favourites">Favourites</string>
 </resources>
