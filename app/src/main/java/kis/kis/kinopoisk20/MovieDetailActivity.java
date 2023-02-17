@@ -2,12 +2,14 @@ package kis.kis.kinopoisk20;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +40,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private TrailersAdapter trailersAdapter;
 
+
+
     private ReviewAdapter reviewAdapter;
     private RecyclerView reviewRecycle;
 
@@ -56,10 +60,33 @@ public class MovieDetailActivity extends AppCompatActivity {
         // test DAta base
         Movie movie = (Movie) getIntent().getSerializableExtra(EXTRA_KEY);
         MovieDao movieDao = MovieDataBase.getInstance(getApplication()).movieDao();
-        movieDao.inserMoview(movie)
-                .subscribeOn(Schedulers.io())
-                .subscribe();
 
+        Drawable star_on = ContextCompat
+                .getDrawable(MovieDetailActivity.this, android.R.drawable.star_on);
+        Drawable star_off = ContextCompat
+                .getDrawable(MovieDetailActivity.this, android.R.drawable.star_off);
+        viewModel.getFavoriteMovie(movie.getId()).observe(this, new Observer<Movie>() {
+            @Override
+            public void onChanged(Movie movieDb) {
+                if (movieDb == null) {
+                    binding.starIv.setImageDrawable(star_off);
+                    binding.starIv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            viewModel.isertMovie(movie);
+                        }
+                    });
+                } else {
+                    binding.starIv.setImageDrawable(star_on);
+                    binding.starIv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            viewModel.removeMovie(movie.getId());
+                        }
+                    });
+                }
+            }
+        });
 
     }
 

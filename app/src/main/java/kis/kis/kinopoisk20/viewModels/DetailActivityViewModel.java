@@ -18,6 +18,9 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import kis.kis.kinopoisk20.RetApi.ApiFactory;
+import kis.kis.kinopoisk20.data_base.MovieDao;
+import kis.kis.kinopoisk20.data_base.MovieDataBase;
+import kis.kis.kinopoisk20.pojo.Movie;
 import kis.kis.kinopoisk20.pojo.ReviewItem;
 import kis.kis.kinopoisk20.pojo.ReviewResponse;
 import kis.kis.kinopoisk20.pojo.Trailer;
@@ -42,10 +45,32 @@ public class DetailActivityViewModel extends AndroidViewModel {
         return reviews;
     }
 
+    // add data base
+    private final MovieDao movieDao;
 
     public DetailActivityViewModel(@NonNull Application application) {
         super(application);
+        this.movieDao = MovieDataBase.getInstance(application).movieDao();
     }
+
+    public LiveData<Movie> getFavoriteMovie(int movieId) {
+        return movieDao.getFavoriteMovie(movieId);
+    }
+
+    public void isertMovie(Movie movie) {
+        Disposable disposable = movieDao.inserMoview(movie)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+        compositeDisposable.add(disposable);
+    }
+
+    public void removeMovie(int movieId) {
+        Disposable disposable = movieDao.removeMovie(movieId)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+        compositeDisposable.add(disposable);
+    }
+
 
     @SuppressLint("CheckResult")
     public void loadTrailers(int id) {
