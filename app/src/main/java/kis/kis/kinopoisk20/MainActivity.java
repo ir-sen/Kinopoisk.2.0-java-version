@@ -29,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // just test
+        Intent intent  = Favourites.newIntent(this);
+        startActivity(intent);
+
         initRecycle();
         initViewModelLoad();
 

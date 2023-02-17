@@ -14,7 +14,7 @@ import kis.kis.kinopoisk20.pojo.Movie;
 public interface MovieDao {
 
     @Query("SELECT * FROM favorite_movies")
-    LiveData<List<Movie>> getAllFavoriteMovies();
+    LiveData<List<Movie>>getAllFavoriteMovies();
 
     @Query("SELECT * FROM favorite_movies WHERE id = :movieId")
     LiveData<Movie> getFavoriteMovie(int movieId);
